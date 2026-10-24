@@ -1,95 +1,167 @@
 # Coordinator System
 
-*A session coordination system for Claude, developed through human–AI collaboration.*
+*A multi-session coordination system for Claude Code, developed through human–AI collaboration.*
 
 **Created and maintained by [@zx-chai](https://github.com/zx-chai)**
 
 ## Overview
 
-**Coordinator** is a custom instruction system designed to organize and manage work across multiple Claude Code sessions.
+**Coordinator** is a custom instruction system designed to organize and manage complex work across multiple Claude Code sessions.
 
-Rather than having one AI session handle everything, Coordinator acts as a central point of coordination. It helps the user plan work, delegates tasks to specialized sessions, reviews their results, and reports back.
+Rather than having one AI session handle planning, execution, and review, Coordinator acts as a central point of coordination.
 
-The system is designed around several principles:
+It helps the user plan work, delegates tasks to specialized sessions, reviews their results, and reports back.
 
-- **Incremental planning:** Plan one step at a time instead of planning an entire project upfront.
-- **Division of responsibilities:** Assign different tasks to sessions with specialized roles.
-- **Context management:** Keep the Coordinator's context focused by delegating substantial work.
-- **Quality control:** Review significant work before considering it complete.
-- **User oversight:** Request approval for proposed plans and involve the user in important decisions.
-- **Efficient model selection:** Choose models and reasoning effort according to task requirements.
+The system follows several principles:
 
-The objective is to make complex, multi-session workflows more structured, manageable, and efficient.
+- **Incremental Planning:** Plan one step at a time rather than planning an entire project upfront.
+- **Division of Responsibilities:** Assign tasks to sessions with specialized roles.
+- **Context Management:** Keep the Coordinator's context focused by delegating substantial work.
+- **Quality Control:** Review significant work before considering it complete.
+- **User Oversight:** Request approval for proposed plans and involve the user in important decisions.
+- **Efficient Model Selection:** Choose models and reasoning effort according to task requirements.
+
+The goal is to make AI-assisted work more organized, efficient, and manageable.
 
 ## How the System Works
 
-Coordinator separates the responsibilities of managing a project from performing its individual tasks.
+Coordinator separates managing a project from executing its individual tasks.
 
-The **Coordinator session** is responsible for understanding the user's goals, planning the next step, starting and managing other sessions, tracking progress, reviewing results, and reporting back.
+The **Coordinator session** handles:
 
-The sessions it starts are responsible for performing their assigned tasks.
+- Understanding the user's goals and requirements
+- Discussing ideas and capturing agreed-upon tasks
+- Planning the next step
+- Starting and managing separate sessions
+- Assigning work to specialized roles
+- Reviewing results and tracking progress
+- Reporting back to the user
 
-This separation helps prevent the Coordinator from filling its own context window with detailed implementation work.
+The sessions it starts perform the assigned work.
+
+This separation is intended to prevent the Coordinator's context window from becoming unnecessarily filled with implementation details.
 
 ### Session Roles
 
-The system defines four specialized roles:
-
 | Role | Responsibility |
 |---|---|
-| **Researcher** | Gathers information, examines existing material, and reports findings without changing files. |
-| **Executor** | Performs implementation work, creates deliverables, and makes changes. |
-| **Reviewer** | Examines completed work, identifies problems, and verifies corrections. |
-| **Operator** | Handles straightforward, mechanical, or computer-use tasks. |
+| **Researcher** | Gathers information and reports findings without modifying files. |
+| **Executor** | Implements tasks, creates deliverables, and makes changes. |
+| **Reviewer** | Examines completed work, identifies problems, and checks corrections. |
+| **Operator** | Handles mechanical, straightforward, or computer-use tasks. |
 
-Coordinator assigns and manages these roles according to the work required.
+The Coordinator manages these sessions and decides when each role is appropriate.
 
-## Setup and Installation
+## Requirements
 
-### 1. Create a Custom Output Style
+The system is designed for the **Claude app's Claude Code environment**, using its session-management capabilities.
 
-Coordinator uses Claude's custom output-style feature to load its instructions.
+The instructions reference tools such as:
 
-**The output style is an activation mechanism, not the system itself.**
+- `start_session`
+- `set_session_effort`
+- `get_session`
+- `set_session_title`
 
-1. Open the Claude app.
+These commands are used by the Coordinator to orchestrate sessions, configure models and reasoning effort, and manage its workflow.
+
+The system is intended for a Claude environment where these capabilities are available.
+
+Compatibility with other Claude interfaces, standalone installations, or different application versions is not guaranteed.
+
+## Installation
+
+Coordinator uses Claude Code's **custom output style** functionality.
+
+The output style serves as a convenient way to activate the Coordinator instructions in a particular session.
+
+It is not intended to be used globally.
+
+There are two ways to install it.
+
+### Option A: Ask Claude Code to Install It
+
+This is the recommended option if your Claude Code environment can access and modify its output-style configuration files.
+
+**Step 1:** Open a normal Claude Code session.
+
+**Step 2:** Copy and send the following prompt:
+
+> I want to install a custom output style called **Coordinator**.
+>
+> The original instructions are available here:
+>
+> https://github.com/zx-chai/AI-Prompts/blob/main/Coordinator-System/coordinator.md
+>
+> Please:
+>
+> 1. Retrieve the complete contents of `coordinator.md` from the repository.
+> 2. Check how custom output styles are installed in my current Claude Code environment.
+> 3. Install the instructions as a custom output style named `Coordinator`.
+> 4. Preserve the original instructions and YAML frontmatter without rewriting or simplifying them.
+> 5. Ensure the style is available in my output style selector.
+> 6. **Do not set Coordinator as my default output style.**
+> 7. Do not modify my other output styles or unrelated configuration files.
+> 8. Verify that the installation succeeded and explain how to activate Coordinator manually.
+>
+> If you cannot access the repository or modify the required configuration, explain what is preventing installation rather than claiming success.
+
+**Step 3:** Review the installation result.
+
+Confirm that Coordinator is available in your output style selector and that your normal style remains the default.
+
+If Claude cannot complete the installation automatically, use the manual method below.
+
+### Option B: Manual Installation
+
+You can also create the output style yourself.
+
+1. Open Claude Code in the Claude app.
 2. Open the output style selector.
-3. Select **New style**.
-4. Create a custom style named `Coordinator`.
-5. Copy the complete contents of [`coordinator.md`](./coordinator.md) into the custom output-style instructions.
-6. Save the style.
+3. Choose **New style**.
+4. Select the option to create a custom style.
+5. Name it `Coordinator`.
+6. Open [`coordinator.md`](./coordinator.md).
+7. Copy the original instructions into the custom style configuration.
+8. Save the style.
 
-Keep the instruction content intact, including its configuration metadata where applicable.
+If your editor provides a separate field for the style name, description, or other metadata, follow its interface rather than duplicating the YAML frontmatter.
 
-### Important: Do Not Set Coordinator as the Default
+Alternatively, where supported, the custom style can be installed as a Markdown file in the Claude Code user configuration directory:
 
-**Coordinator is intended to be activated only in the session responsible for coordination.**
+`~/.claude/output-styles/coordinator.md`
 
-Do not configure it as your default output style.
+Preserve the original file contents, including the YAML frontmatter.
 
-The Coordinator starts other Claude Code sessions to perform delegated work. If Coordinator is configured as the default, those sessions may also inherit its instructions.
+**Important: Do not set Coordinator as the default output style.**
 
-This would interfere with the intended separation between the Coordinator and the sessions carrying out its tasks.
+The Coordinator is meant to operate in its own session.
 
-The recommended approach is to start a normal session and activate Coordinator manually.
+If configured as the default, separately started sessions may inherit the Coordinator instructions, potentially interfering with their assigned roles.
 
 ## How to Use Coordinator
 
+Installing Coordinator and activating Coordinator are two different steps.
+
+You only need to install the output style once, but you activate it whenever you want to start a new coordination session.
+
 ### Step 1: Start a New Session
 
-Open a new session in the Claude app using your normal output style.
+Open a fresh Claude Code session in the Claude app.
 
-Do not activate Coordinator immediately.
+**Keep your normal output style selected.**
+
+Do not activate Coordinator yet.
 
 ### Step 2: Introduce Your Project
 
-Send an initial message describing what you want to accomplish.
+Send an initial message explaining what you want to accomplish.
 
-Include relevant information about the project, your goals, constraints, and anything the Coordinator should understand before beginning.
+Include your goals, project background, constraints, preferences, or any other information that may be helpful.
 
 For example:
 
-> Hi! I'm working on a project and would like your help coordinating it.
+> Hi! I'd like your help with a project.
 >
 > My goal is to [describe your goal].
 >
@@ -97,17 +169,19 @@ For example:
 >
 > My main requirements or constraints are [describe requirements].
 >
-> Please confirm that you understand what I'm trying to accomplish.
+> Please confirm your understanding of the project before we begin.
 
-The goal of this exchange is to establish context before applying the Coordinator instructions.
+You can make this initial message as detailed or as simple as necessary.
 
-### Step 3: Wait for Acknowledgment
+The purpose is to establish the project context before activating the Coordinator instructions.
 
-Allow Claude to respond and confirm its understanding of the project.
+### Step 3: Establish Understanding
 
-Clarify anything important if necessary.
+Allow Claude to respond and acknowledge your initial message.
 
-Once the initial context has been established, proceed to the next step.
+Clarify any misunderstandings if necessary.
+
+Once Claude understands what you're trying to achieve, proceed to the next step.
 
 ### Step 4: Activate Coordinator
 
@@ -115,92 +189,85 @@ Once the initial context has been established, proceed to the next step.
 2. Select **Coordinator**.
 3. Continue the conversation.
 
-The session should now follow the Coordinator instructions while retaining the context established during the initial conversation.
+The session should now follow the Coordinator instructions while retaining the context established during your initial exchange.
 
-**Only activate Coordinator in the session intended to manage the work.**
+**Only the session responsible for coordination should use the Coordinator output style.**
 
-### Step 5: Begin Coordinating
+Do not change your global default.
 
-You can now discuss ideas, assign tasks, or describe deliverables.
+### Step 5: Start Working
 
-Coordinator distinguishes between ideas to discuss and tasks that have been agreed upon.
+You can now discuss ideas, assign tasks, or describe what you want to accomplish.
 
-If you provide a goal without detailed execution instructions, Coordinator will propose the next step.
+Coordinator distinguishes between ideas for discussion and tasks that have been agreed upon.
+
+If you provide a goal without specific execution instructions, Coordinator will propose the next step.
 
 When planning is required, it will:
 
-1. Determine what work should happen next.
-2. Identify which sessions should perform that work.
+1. Determine what needs to happen next.
+2. Identify the sessions required.
 3. Choose appropriate models and reasoning effort.
-4. Present the proposed step for your approval.
-5. Execute the approved plan.
+4. Present a proposed plan for your approval.
+5. Execute the plan after approval.
+6. Review results and report back.
 
-Coordinator is designed to plan one step at a time, incorporating results and new information before proposing subsequent steps.
+Coordinator generally plans one step at a time, using completed work and new information to guide subsequent decisions.
 
-## Working With Sessions
+You can also provide explicit session instructions, as described in `coordinator.md`.
 
-Coordinator uses Claude app session-management capabilities to organize work.
+## Managing Sessions
 
-Its instructions reference commands such as:
+Coordinator follows several session-management principles:
 
-- `start_session` — Start a session to perform assigned work.
-- `set_session_effort` — Adjust a session's reasoning effort.
-- `get_session` — Retrieve information about a session.
-- `set_session_title` — Set a session's title.
-
-These commands are used in the Claude app environment for which this system was designed.
-
-**Compatibility note:** Availability and behavior may depend on the Claude app version, enabled capabilities, and session environment. The system is not intended to operate unchanged in environments that lack the required session-management tools.
-
-### Session Management Principles
-
-Coordinator is instructed to:
-
-- Reuse sessions when their existing context is relevant.
-- Avoid assigning conflicting file edits to different sessions.
-- Delegate substantial implementation work rather than doing it itself.
+- Reuse existing sessions when their context remains relevant.
+- Avoid assigning conflicting file edits to multiple sessions.
+- Delegate substantial work rather than filling its own context with implementation details.
+- Use specialized sessions for research, execution, review, and mechanical work.
+- Wait for session reports instead of repeatedly polling.
 - Review significant changes before reporting completion.
-- Wait for assigned sessions to report instead of repeatedly polling them.
-- Keep the user informed about results and outstanding work.
-- Recommend session compaction when a phase ends or context is no longer needed.
+- Keep the user informed about completed work and unresolved problems.
+- Recommend session compaction when a phase ends or its context is no longer needed.
 
-These behaviors are defined in more detail in `coordinator.md`.
+The complete rules for session management are defined in [`coordinator.md`](./coordinator.md).
 
-## Reviews and Quality Control
+## Review and Quality Control
 
-The Coordinator System includes a structured review process for significant work.
+The system includes a structured review process for significant work.
 
-When appropriate, a Reviewer session examines an Executor's work against specific, checkable requirements.
+When appropriate, a Reviewer session examines work completed by an Executor.
 
-Problems are identified and passed back for correction.
+The Reviewer identifies problems against checkable requirements, and the Executor is responsible for addressing them.
 
-The review process may repeat for several rounds, with unresolved problems reported to the user if they cannot be satisfactorily addressed.
+The review process may repeat for several rounds.
 
-Not every task requires a review. Simple mechanical changes, exploratory tasks, and information-gathering work may follow a lighter process.
+Unresolved problems are reported to the user when necessary.
+
+Not every task requires a separate review. Simple mechanical changes, exploratory work, and information-gathering tasks may follow a lighter process.
 
 ## Model and Effort Selection
 
-Coordinator includes guidelines for choosing AI models and reasoning effort according to each session's role and task.
+Coordinator includes guidelines for choosing models and reasoning effort according to each task's requirements.
 
 The general objective is to use the least expensive configuration capable of achieving the required quality.
 
-More demanding work may justify a stronger model or greater reasoning effort.
+More demanding tasks may justify stronger models or greater reasoning effort.
 
-The exact decision rules are included in the Coordinator instructions.
+The detailed selection rules are included in the original Coordinator instructions.
 
 ## Limitations
 
 Coordinator is an experimental, instruction-based workflow.
 
-Its effectiveness depends on factors including:
+Its effectiveness depends on:
 
-- The capabilities available in the Claude app.
-- The AI model's ability to follow complex instructions.
-- The quality and clarity of the user's project context.
-- The reliability of delegated sessions.
-- The availability of the required session-management tools.
+- The capabilities available in the Claude app
+- The AI model's ability to follow the instructions
+- The clarity of the user's goals and project context
+- The reliability of delegated sessions
+- The availability of the required session-management tools
 
-The instructions describe intended behavior; they do not guarantee that every operation will succeed.
+The instructions describe intended behavior rather than guaranteed execution.
 
 AI-generated work should still be reviewed, particularly when accuracy, security, or significant consequences are involved.
 
@@ -208,9 +275,9 @@ AI-generated work should still be reviewed, particularly when accuracy, security
 
 **Constructive criticism and improvement suggestions are strongly encouraged.**
 
-This system was developed through experimentation and collaboration with AI, not through formal training in computer science or artificial intelligence.
+This system was developed through experimentation and collaboration with AI, rather than formal training in computer science or artificial intelligence.
 
-I am interested in understanding how it can be improved.
+I am interested in identifying its weaknesses and understanding how it can be improved.
 
 If you notice:
 
@@ -221,13 +288,13 @@ If you notice:
 - Better approaches to task delegation
 - Weaknesses in the review process
 - Compatibility issues
-- Opportunities to make the system more reliable or understandable
+- Opportunities to improve reliability or clarity
 
 Please consider opening a GitHub Issue or submitting a Pull Request.
 
-When suggesting a change, explaining *why* it improves the system is especially helpful.
+Explanations of *why* a proposed change would improve the system are especially appreciated.
 
-The goal is not simply to collect corrections but to learn from them.
+The goal is not simply to collect corrections, but to learn from them.
 
 ## License and Attribution
 
@@ -259,9 +326,9 @@ Its design, organization, and ongoing development are directed by @zx-chai with 
 
 ### Documentation
 
-**This README was drafted by ChatGPT, developed by OpenAI**, based on the Coordinator instructions and workflow explanations provided by @zx-chai.
+**This README was drafted and revised by ChatGPT, developed by OpenAI**, based on the original Coordinator instructions and workflow explanations provided by @zx-chai.
 
-ChatGPT assisted with organizing the documentation, explaining the system, and presenting its setup and usage instructions.
+ChatGPT assisted with organizing the documentation, explaining the system, and preparing installation and usage instructions.
 
 ### Disclaimer
 
