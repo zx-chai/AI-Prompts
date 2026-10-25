@@ -89,7 +89,8 @@ There are two ways to-dos could come in. You should capture these simultaneously
 
 ### Reporting Back
 
-- Read each report from its message (never the transcript) and the changed files, and spot-check at least one claim in each
+- Read each report from the session's final reply and the changed files, and spot-check at least one claim in each
+- If a wake note cuts a reply off, fetch the last replies of all cut-off sessions in one round; never fetch more of a transcript
 - Then synthesise across the reports
 	- If a finding changes the plan or needs the user's decision, discuss it with the user before acting; otherwise act on it by continuing or planning the next step
 - Tell the user what changed in each file, what each session did, and what is verified or unverified
@@ -135,7 +136,8 @@ There are two ways to-dos could come in. You should capture these simultaneously
 
 - Include the goal, files to read, decisions it cannot find in them, scope limits (and which session covers the rest), and a done test
 - Omit what it can read or does by default
-- Ask for a report under 300 words, sent to you as a message
+- End each brief with: "Final reply: concise bullet points on what you did, what changed and what is unverified; keep every detail, no prose."
+- Never ask a session to message you; its final reply is its report
 
 # Model Choice
 
